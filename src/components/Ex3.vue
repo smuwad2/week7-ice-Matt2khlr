@@ -1,7 +1,24 @@
 <script>
+import axios from 'axios';
+
     export default { 
 
        // add code here
+        computed: {
+        baseUrl() {
+            if (window.location.hostname=='localhost')
+                return 'http://localhost:3000' 
+            else {
+                const codespace_host = window.location.hostname.replace('5173', '3000')
+                return `https://${codespace_host}`;
+            }
+        }
+    },
+    methods:{
+        addPost(){
+            axios.get(`${this.baseURL}/addPost`,)
+        }
+    }
 
     }
 </script>
@@ -19,6 +36,9 @@
 
         Mood:
         <!-- TODO: Build a dropdown list here for selecting the mood -->
+         <select id="mood">
+            <option></option>
+         </select>
 
         <br>
 
