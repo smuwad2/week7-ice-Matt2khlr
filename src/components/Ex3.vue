@@ -2,7 +2,20 @@
 import axios from 'axios';
 
     export default { 
-
+        data(){
+            return{
+            moods: [
+                'happy',
+                'sad',
+                'angry'
+            ],
+            selMood: "",
+            subject: '',
+            entry:'',
+            outputMsg:''
+            }
+        },
+        
        // add code here
         computed: {
         baseUrl() {
@@ -16,7 +29,17 @@ import axios from 'axios';
     },
     methods:{
         addPost(){
-            axios.get(`${this.baseURL}/addPost`,)
+            axios.get(`${this.baseURL}/addPost`,{
+                params: {
+                    "subject": this.subject,
+                    "entry": this.entry,
+                    "mood": this.selMood
+                }
+            }).then(response=>{
+                outputMsg =  response.data.message;
+            }).catch(error=>{
+                console.log(error)
+            })
         }
     }
 
@@ -36,15 +59,19 @@ import axios from 'axios';
 
         Mood:
         <!-- TODO: Build a dropdown list here for selecting the mood -->
-         <select id="mood">
-            <option></option>
+         <select v-model="selMood">
+            <option v-for="mood in moods">
+                {{ mood }}
+            </option>
+
          </select>
 
         <br>
 
         <br>
-        <button>Submit New Post</button>
-
+        <button @click="addPost()">Submit New Post</button>
+         <br></br>
+         {{ outputMsg }}
         <hr> Click  <a><router-link to="/ViewPosts/">here</router-link></a>  to return to Main Page
        
     </div>
